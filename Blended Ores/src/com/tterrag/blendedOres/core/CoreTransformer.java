@@ -29,18 +29,8 @@ public class CoreTransformer implements IClassTransformer
 	private final String RENDER_METHOD_NAME = "getRenderType";
 	private final String RENDER_METHOD_NAME_OBF = "func_71857_b";
 	private final String RENDER_METHOD_NOTCH = "a";
-	private final String RENDER_METHOD_DESC = "(Lnet/minecraft/world/IBlockAccess;III)Z";
-	private final String OBF_NEW_RENDER_METHOD_DESC = "(Lbeu;F)V";
-//	private final String NEW_FENCE_METHOD_DESC = "(Lnet/minecraft/world/IBlockAccess;III)Z";
-//
-//	private final String WALL_CLASS_NAME = "net.minecraft.block.BlockWall";
-//	private final String OBF_WALL_CLASS_NAME = "arn";
-//	private final String WALL_METHOD_NAME = "canConnectWallTo";
-//	private final String WALL_METHOD_NAME_OBF = "func_82538_d";
-//	private final String WALL_METHOD_NOTCH = "a";
-//	private final String WALL_METHOD_DESC = "(Lnet/minecraft/world/IBlockAccess;III)Z";
-//	private final String OBF_NEW_WALL_METHOD_DESC = "(Lbeu;F)V";
-//	private final String NEW_WALL_METHOD_DESC = "(Lnet/minecraft/world/IBlockAccess;III)Z";
+	private final String RENDER_METHOD_DESC = "()I";
+	private final String OBF_RENDER_METHOD_DESC = "()I";
 
 	@Override
 	public byte[] transform(String arg0, String arg1, byte[] arg2)
@@ -61,7 +51,7 @@ public class CoreTransformer implements IClassTransformer
 		{
 			MethodNode m = methods.next();
 			if ((m.name.equals(this.RENDER_METHOD_NAME) || m.name.equals(this.RENDER_METHOD_NAME_OBF) || m.name.equals(this.RENDER_METHOD_NOTCH))
-					&& (m.desc.equals(this.RENDER_METHOD_DESC) || m.desc.equals(OBF_NEW_RENDER_METHOD_DESC)))
+					&& (m.desc.equals(this.RENDER_METHOD_DESC) || m.desc.equals(OBF_RENDER_METHOD_DESC)))
 			{
 				System.out.println("BEGINNING TRANSFORMATION!");
 				for (int index = 0; index < m.instructions.size(); index++)
@@ -83,8 +73,6 @@ public class CoreTransformer implements IClassTransformer
 
 						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "niel/mod/core/CoreMethods", "canConnectFenceTo", this.RENDER_METHOD_DESC));
 
-						// toInject.add(new JumpInsnNode(Opcodes.IFNE,
-						// lmm1Node));
 						toInject.add(jumpLabel);
 						toInject.add(lmm1Node);
 
