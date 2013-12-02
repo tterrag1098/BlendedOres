@@ -4,7 +4,7 @@ import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
-public class CoreModTweak implements IFMLLoadingPlugin {
+public class CoreBlendedOres implements IFMLLoadingPlugin {
 
 	@Override
 	public String[] getLibraryRequestClass() {

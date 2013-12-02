@@ -35,20 +35,39 @@ public class CoreTransformer implements IClassTransformer
 	@Override
 	public byte[] transform(String arg0, String arg1, byte[] arg2)
 	{
-		if (arg1.compareTo(ORE_CLASS_NAME) == 0)
+		if (arg1.compareTo(ORE_CLASS_NAME) == 0 || arg1.compareTo(OBF_ORE_CLASS_NAME) == 0)
 			return patchClassOre(arg1, arg2, true);
 		return arg2;
 	}
 
 	private byte[] patchClassOre(String name, byte[] bytes, boolean isObfuscated)
 	{
+		System.out.println("BEGINNING ORE TRANSFORMATION");
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept(classNode, 0);
+		
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
+		InsnList toInject = new InsnList();
+		
+		toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "getRenderType", this.RENDER_METHOD_DESC));
+		
+		System.out.println(cw.newMethod("net/minecraft/block/BlockOre", RENDER_METHOD_NAME, RENDER_METHOD_DESC, true));
+		
+		classNode.accept(cw);
+		
+		System.out.println("ORE TRANSFORMATION COMPLETE");
+		return cw.toByteArray();
+		
+		//BELOW HERE OLD CODE ***********************************************************
+		
+		/*
 		Iterator<MethodNode> methods = classNode.methods.iterator();
 		while (methods.hasNext())
 		{
+			
+			/*
 			MethodNode m = methods.next();
 			if ((m.name.equals(this.RENDER_METHOD_NAME) || m.name.equals(this.RENDER_METHOD_NAME_OBF) || m.name.equals(this.RENDER_METHOD_NOTCH))
 					&& (m.desc.equals(this.RENDER_METHOD_DESC) || m.desc.equals(OBF_RENDER_METHOD_DESC)))
@@ -84,9 +103,8 @@ public class CoreTransformer implements IClassTransformer
 			}
 		}
 
-		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 		classNode.accept(cw);
 
-		return cw.toByteArray();
+		return cw.toByteArray();*/
 	}
 }

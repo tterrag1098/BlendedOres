@@ -2,5 +2,8 @@ package com.tterrag.blendedOres.core;
 
 public class CoreMethods {
 	
-	//TODO getRenderType
+	public int getRenderType()
+	{
+		return com.tterrag.blendedOres.BlendedOres.renderID;
+	}
 }
