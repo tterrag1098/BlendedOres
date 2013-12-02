@@ -11,6 +11,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
+import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -52,7 +53,8 @@ public class CoreTransformer implements IClassTransformer
 		InsnList toInject = new InsnList();
 		
 		toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "getRenderType", this.RENDER_METHOD_DESC));
-		
+		toInject.add(new InsnNode(Opcodes.RETURN));
+		 
 		System.out.println(cw.newMethod("net/minecraft/block/BlockOre", RENDER_METHOD_NAME, RENDER_METHOD_DESC, true));
 		
 		classNode.accept(cw);

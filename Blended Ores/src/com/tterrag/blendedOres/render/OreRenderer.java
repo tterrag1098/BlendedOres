@@ -12,7 +12,6 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			RenderBlocks renderer) {
-		renderer.renderBlockAsItem(Block.stone, metadata, 1.0F);
 	}
 
 	@Override

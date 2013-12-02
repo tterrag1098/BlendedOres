@@ -3,6 +3,7 @@ package com.tterrag.blendedOres;
 import com.tterrag.blendedOres.config.ConfigHandler;
 import com.tterrag.blendedOres.lib.Reference;
 import com.tterrag.blendedOres.proxy.CommonProxy;
+import com.tterrag.blendedOres.render.OreRenderer;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
@@ -28,7 +29,7 @@ public class BlendedOres {
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
-						
+		RenderingRegistry.registerBlockHandler(new OreRenderer());	
 		proxy.initSounds();
 		proxy.initRenderers();
 		
