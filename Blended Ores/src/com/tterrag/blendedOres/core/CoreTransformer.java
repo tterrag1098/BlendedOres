@@ -49,7 +49,7 @@ public class CoreTransformer implements IClassTransformer
 	    mv.visitVarInsn(Opcodes.ALOAD, 0);
 	    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "CoreMethods", "()I");
 	    mv.visitInsn(Opcodes.RETURN);
-	    mv.visitMaxs(1, 1);
+	    mv.visitMaxs(1, 2);
 	    mv.visitEnd();
 	    classNode.methods.add(mv);
 	    
