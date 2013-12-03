@@ -1,21 +1,15 @@
 package com.tterrag.blendedOres.core;
 
-import java.util.Iterator;
-
 import net.minecraft.launchwrapper.IClassTransformer;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
 
 /**
  * @author fishtaco, tterrag
@@ -50,13 +44,15 @@ public class CoreTransformer implements IClassTransformer
 		
 		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
 
-		InsnList toInject = new InsnList();
-		
-		toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "getRenderType", this.RENDER_METHOD_DESC));
-		toInject.add(new InsnNode(Opcodes.RETURN));
-		 
-		System.out.println(cw.newMethod("net/minecraft/block/BlockOre", RENDER_METHOD_NAME, RENDER_METHOD_DESC, true));
-		
+		MethodNode mv = new MethodNode(Opcodes.ACC_PUBLIC, "getRenderType", "()I", null, null);
+	    mv.visitCode();
+	    mv.visitVarInsn(Opcodes.ALOAD, 0);
+	    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "CoreMethods", "()I");
+	    mv.visitInsn(Opcodes.RETURN);
+	    mv.visitMaxs(1, 1);
+	    mv.visitEnd();
+	    classNode.methods.add(mv);
+	    
 		classNode.accept(cw);
 		
 		System.out.println("ORE TRANSFORMATION COMPLETE");
