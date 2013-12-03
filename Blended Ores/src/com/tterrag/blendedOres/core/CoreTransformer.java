@@ -10,6 +10,7 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 /**
  * @author fishtaco, tterrag
@@ -42,16 +43,15 @@ public class CoreTransformer implements IClassTransformer
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept(classNode, 0);
 		
-		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		cw.newConst(ClassWriter.COMPUTE_MAXS);
 
-		MethodNode mv = new MethodNode(Opcodes.ACC_PUBLIC, "getRenderType", "()I", null, null);
-	    mv.visitCode();
-	    mv.visitVarInsn(Opcodes.ALOAD, 0);
-	    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "CoreMethods", "()I");
-	    mv.visitInsn(Opcodes.RETURN);
-	    mv.visitMaxs(1, 2);
-	    mv.visitEnd();
-	    classNode.methods.add(mv);
+		MethodNode mn = new MethodNode(Opcodes.ACC_PUBLIC, "getRenderType", "()I", null, null);
+		InsnList il = mn.instructions;
+		il.add(new VarInsnNode(Opcodes.ALOAD, 0));
+		il.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "com/tterrag/blendedOres/core/CoreMethods", "getRenderType", "()I"));
+		il.add(new InsnNode(Opcodes.IRETURN));
+	    classNode.methods.add(mn);
 	    
 		classNode.accept(cw);
 		

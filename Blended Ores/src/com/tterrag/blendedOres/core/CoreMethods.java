@@ -1,9 +1,11 @@
 package com.tterrag.blendedOres.core;
 
+import com.tterrag.blendedOres.BlendedOres;
+
 public class CoreMethods {
 	
 	public static int getRenderType()
 	{
-		return com.tterrag.blendedOres.BlendedOres.renderID;
+		return BlendedOres.renderID;
 	}
 }
