@@ -18,10 +18,11 @@ import org.objectweb.asm.tree.VarInsnNode;
  */
 @SuppressWarnings("unused")
 public class CoreTransformer implements IClassTransformer
-{
-
+{	
 	private final String ORE_CLASS_NAME = "net.minecraft.block.BlockOre";
 	private final String OBF_ORE_CLASS_NAME = "apo";
+	private final String REDSTONE_ORE_CLASS_NAME = "net.minecraft.block.BlockRedstoneOre";
+	private final String OBF_REDSTONE_ORE_CLASS_NAME = "";	
 	private final String RENDER_METHOD_NAME = "getRenderType";
 	private final String RENDER_METHOD_NAME_OBF = "func_71857_b";
 	private final String RENDER_METHOD_NOTCH = "a";
@@ -31,7 +32,7 @@ public class CoreTransformer implements IClassTransformer
 	@Override
 	public byte[] transform(String arg0, String arg1, byte[] arg2)
 	{
-		if (arg1.compareTo(ORE_CLASS_NAME) == 0 || arg1.compareTo(OBF_ORE_CLASS_NAME) == 0)
+		if (arg1.compareTo(ORE_CLASS_NAME) == 0 || arg1.compareTo(OBF_ORE_CLASS_NAME) == 0 || arg1.compareTo(REDSTONE_ORE_CLASS_NAME) == 0 || arg1.compareTo(OBF_REDSTONE_ORE_CLASS_NAME) == 0)
 			return patchClassOre(arg1, arg2, true);
 		return arg2;
 	}
@@ -57,52 +58,5 @@ public class CoreTransformer implements IClassTransformer
 		
 		System.out.println("ORE TRANSFORMATION COMPLETE");
 		return cw.toByteArray();
-		
-		//BELOW HERE OLD CODE ***********************************************************
-		
-		/*
-		Iterator<MethodNode> methods = classNode.methods.iterator();
-		while (methods.hasNext())
-		{
-			
-			/*
-			MethodNode m = methods.next();
-			if ((m.name.equals(this.RENDER_METHOD_NAME) || m.name.equals(this.RENDER_METHOD_NAME_OBF) || m.name.equals(this.RENDER_METHOD_NOTCH))
-					&& (m.desc.equals(this.RENDER_METHOD_DESC) || m.desc.equals(OBF_RENDER_METHOD_DESC)))
-			{
-				System.out.println("BEGINNING TRANSFORMATION!");
-				for (int index = 0; index < m.instructions.size(); index++)
-				{
-					if (m.instructions.get(index).getType() == AbstractInsnNode.METHOD_INSN)
-					{
-
-						LabelNode lmm1Node = new LabelNode(new Label());
-
-						LabelNode jumpLabel = new LabelNode(new Label());
-
-						// make new instruction list
-						InsnList toInject = new InsnList();
-
-						toInject.add(new VarInsnNode(Opcodes.ALOAD, 1));
-						toInject.add(new VarInsnNode(Opcodes.ILOAD, 2));
-						toInject.add(new VarInsnNode(Opcodes.ILOAD, 3));
-						toInject.add(new VarInsnNode(Opcodes.ILOAD, 4));
-
-						toInject.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "niel/mod/core/CoreMethods", "canConnectFenceTo", this.RENDER_METHOD_DESC));
-
-						toInject.add(jumpLabel);
-						toInject.add(lmm1Node);
-
-						m.instructions.insert(m.instructions.get(index), toInject);
-						System.out.println("TRANSFORMATION COMPLETE!");
-						break;
-					}
-				}
-			}
-		}
-
-		classNode.accept(cw);
-
-		return cw.toByteArray();*/
 	}
 }
