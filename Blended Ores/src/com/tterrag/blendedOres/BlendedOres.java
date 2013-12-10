@@ -29,11 +29,11 @@ public class BlendedOres {
 	public void preInit(FMLPreInitializationEvent event) {
 		
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
-		RenderingRegistry.registerBlockHandler(new OreRenderer());	
+		renderID = RenderingRegistry.getNextAvailableRenderId();
+		RenderingRegistry.registerBlockHandler(new OreRenderer());
+		System.out.println("RenderID: " + renderID);
 		proxy.initSounds();
 		proxy.initRenderers();
-		
-		renderID = RenderingRegistry.getNextAvailableRenderId();
 	}
 
 	@EventHandler

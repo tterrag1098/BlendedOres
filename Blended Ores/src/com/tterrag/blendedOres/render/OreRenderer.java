@@ -12,7 +12,6 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
 			RenderBlocks renderer) {
-		System.out.println("running");
 		renderer.renderBlockAsItem(Block.stone, modelID, 1.0F);
 	}
 
@@ -20,7 +19,6 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		renderer.renderStandardBlock(Block.stone, x, y, z);
-		System.out.println("TEST");
 		return false;
 	}
 
