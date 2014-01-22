@@ -1,10 +1,13 @@
 package com.tterrag.blendedOres.render;
 
-import com.tterrag.blendedOres.BlendedOres;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
+
+import com.tterrag.blendedOres.BlendedOres;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class OreRenderer implements ISimpleBlockRenderingHandler{
@@ -20,10 +23,28 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 			Block block, int modelId, RenderBlocks renderer) {
 		Block renderBlock = findNearestDiffBlock(world, x, y, z, block);
 		renderer.renderStandardBlock(renderBlock == null || !renderBlock.isOpaqueCube() ? Block.stone : renderBlock, x, y, z);
-		renderer.renderFaceXNeg(block, x, y, z, BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
-		renderer.renderFaceXPos(block, x, y, z, BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
+		Icon icon = BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z));
+		
+		Tessellator tessellator = Tessellator.instance;
+		
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x - 1, y, z));
+		renderer.renderFaceXNeg(block, x, y, z, icon);
+		
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x + 1, y, z));
+		renderer.renderFaceXPos(block, x, y, z, icon);
+		
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y - 1, z)); 
+		renderer.renderFaceYNeg(block, x, y, z, icon);
+		
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y + 1, z));
+        renderer.renderFaceYPos(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z - 1));
+		renderer.renderFaceZNeg(block, x, y, z, icon);
 
-	//	System.out.println(BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
+		renderer.renderFaceZPos(block, x, y, z, icon);
+
 		return false;
 	}
 
@@ -44,17 +65,17 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 		int[] dirs = new int[6];
 		if (anyDiffBlocksTouching(world, x, y, z, block))
 		{
-			 if (world.getBlockId(x + 1, y, z) != block.blockID && !world.isAirBlock(x + 1, y, z) && world.getBlockId(x + 1, y, z) != block.blockID)
+			 if (world.getBlockId(x + 1, y, z) != block.blockID && !world.isAirBlock(x + 1, y, z))
 				 return Block.blocksList[world.getBlockId(x + 1, y, z)];
-			 if (world.getBlockId(x - 1, y, z) != block.blockID && !world.isAirBlock(x - 1, y, z) && world.getBlockId(x - 1, y, z) != block.blockID)
+			 if (world.getBlockId(x - 1, y, z) != block.blockID && !world.isAirBlock(x - 1, y, z))
 				 return Block.blocksList[world.getBlockId(x - 1, y, z)];
-			 if (world.getBlockId(x, y + 1, z) != block.blockID && !world.isAirBlock(x, y + 1, z) && world.getBlockId(x, y + 1, z) != block.blockID)
+			 if (world.getBlockId(x, y + 1, z) != block.blockID && !world.isAirBlock(x, y + 1, z))
 				 return Block.blocksList[world.getBlockId(x, y + 1, z)];
-			 if (world.getBlockId(x, y - 1, z) != block.blockID && !world.isAirBlock(x, y - 1, z) && world.getBlockId(x, y - 1, z) != block.blockID)
+			 if (world.getBlockId(x, y - 1, z) != block.blockID && !world.isAirBlock(x, y - 1, z))
 				 return Block.blocksList[world.getBlockId(x, y - 1, z)];
-			 if (world.getBlockId(x, y, z + 1) != block.blockID && !world.isAirBlock(x, y, z + 1) && world.getBlockId(x, y, z + 1) != block.blockID)
+			 if (world.getBlockId(x, y, z + 1) != block.blockID && !world.isAirBlock(x, y, z + 1))
 				 return Block.blocksList[world.getBlockId(x, y, z + 1)];
-			 if (world.getBlockId(x, y, z - 1) != block.blockID && !world.isAirBlock(x, y, z - 1) && world.getBlockId(x, y, z - 1) != block.blockID)
+			 if (world.getBlockId(x, y, z - 1) != block.blockID && !world.isAirBlock(x, y, z - 1))
 				 return Block.blocksList[world.getBlockId(x, y, z - 1)];
 		}
 		else return findNearestDiffBlock(world, x, y - 1, z, block);
@@ -63,12 +84,17 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	
 	private boolean anyDiffBlocksTouching(IBlockAccess world, int x, int y, int z, Block block)
 	{
-		return world.getBlockId(x + 1, y, z) != block.blockID
-				|| world.getBlockId(x - 1, y, z) != block.blockID
-				|| world.getBlockId(x, y + 1, z) != block.blockID
-				|| world.getBlockId(x, y - 1, z) != block.blockID
-				|| world.getBlockId(x, y, z + 1) != block.blockID
-				|| world.getBlockId(x, y, z - 1) != block.blockID;
+		return isDifferent(block, x + 1, y, z, world)
+				|| isDifferent(block, x - 1, y, z, world)
+				|| isDifferent(block, x, y + 1, z, world)
+				|| isDifferent(block, x, y - 1, z, world)
+				|| isDifferent(block, x, y, z + 1, world)
+				|| isDifferent(block, x, y, z - 1, world);
+	}
+	
+	private boolean isDifferent(Block block, int x, int y, int z, IBlockAccess world)
+	{
+		return world.getBlockId(x, y, z) != block.blockID && !world.isAirBlock(x, y, z);
 	}
 
 }
