@@ -30,6 +30,7 @@ public class CommonProxy {
 		idsAndMetasToRender.add(new int[]{21, 0});
 		idsAndMetasToRender.add(new int[]{56, 0});
 		idsAndMetasToRender.add(new int[]{73, 0});
+		idsAndMetasToRender.add(new int[]{74, 0});
 		idsAndMetasToRender.add(new int[]{129, 0});
 		idsAndMetasToRender.add(new int[]{153, 0});
 
@@ -65,6 +66,7 @@ public class CommonProxy {
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":coal"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":lapis"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":diamond"));
+		icons.add(event.map.registerIcon(Reference.MOD_ID + ":redStone"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":redStone"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":emerald"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":quartz"));
