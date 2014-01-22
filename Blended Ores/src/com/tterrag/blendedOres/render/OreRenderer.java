@@ -18,7 +18,9 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
-		renderer.renderStandardBlock(Block.stone, x, y, z);
+		Block renderBlock = findNearestDiffBlock(world, x, y, z, block);
+		renderer.renderStandardBlock(renderBlock == null || !renderBlock.isOpaqueCube() ? Block.stone : renderBlock, x, y, z);
+		renderer.renderFaceXNeg(block, x, y, z, BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
 		return false;
 	}
 
@@ -30,6 +32,40 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	@Override
 	public int getRenderId() {
 		return BlendedOres.renderID;
+	}
+	
+	private Block findNearestDiffBlock(IBlockAccess world, int x, int y, int z, Block block)
+	{
+		if (world.isAirBlock(x, y, z))
+			return Block.stone;
+		int[] dirs = new int[6];
+		if (anyDiffBlocksTouching(world, x, y, z, block))
+		{
+			 if (world.getBlockId(x + 1, y, z) != block.blockID && !world.isAirBlock(x + 1, y, z))
+				 return Block.blocksList[world.getBlockId(x + 1, y, z)];
+			 if (world.getBlockId(x - 1, y, z) != block.blockID && !world.isAirBlock(x - 1, y, z))
+				 return Block.blocksList[world.getBlockId(x - 1, y, z)];
+			 if (world.getBlockId(x, y + 1, z) != block.blockID && !world.isAirBlock(x, y + 1, z))
+				 return Block.blocksList[world.getBlockId(x, y + 1, z)];
+			 if (world.getBlockId(x, y - 1, z) != block.blockID && !world.isAirBlock(x, y - 1, z))
+				 return Block.blocksList[world.getBlockId(x, y - 1, z)];
+			 if (world.getBlockId(x, y, z + 1) != block.blockID && !world.isAirBlock(x, y, z + 1))
+				 return Block.blocksList[world.getBlockId(x, y, z + 1)];
+			 if (world.getBlockId(x, y, z - 1) != block.blockID && !world.isAirBlock(x, y, z - 1))
+				 return Block.blocksList[world.getBlockId(x, y, z - 1)];
+		}
+		else return findNearestDiffBlock(world, x, y - 1, z, block);
+		return Block.stone;
+	}
+	
+	private boolean anyDiffBlocksTouching(IBlockAccess world, int x, int y, int z, Block block)
+	{
+		return world.getBlockId(x + 1, y, z) != block.blockID
+				|| world.getBlockId(x - 1, y, z) != block.blockID
+				|| world.getBlockId(x, y + 1, z) != block.blockID
+				|| world.getBlockId(x, y - 1, z) != block.blockID
+				|| world.getBlockId(x, y, z + 1) != block.blockID
+				|| world.getBlockId(x, y, z - 1) != block.blockID;
 	}
 
 }
