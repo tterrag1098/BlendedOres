@@ -10,7 +10,7 @@ import com.tterrag.blendedOres.BlendedOres;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class OreRenderer implements ISimpleBlockRenderingHandler{
+public class OreRenderer extends RenderBlocks implements ISimpleBlockRenderingHandler{
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID,
@@ -24,28 +24,34 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 		Block renderBlock = findNearestDiffBlock(world, x, y, z, block);
 		renderer.renderStandardBlock(renderBlock == null || !renderBlock.isOpaqueCube() ? Block.stone : renderBlock, x, y, z);
 		Icon icon = BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z));
-		
+
+		///System.out.println(block.blockID);
+		//this.renderStandardBlock(Block.stone, x, y, z);
+				
 		Tessellator tessellator = Tessellator.instance;
 		
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x - 1, y, z));
+        tessellator.setColorOpaque(170, 170, 170);
+
+       // tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x - 1, y, z));
 		renderer.renderFaceXNeg(block, x, y, z, icon);
 		
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x + 1, y, z));
+        //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x + 1, y, z));
 		renderer.renderFaceXPos(block, x, y, z, icon);
 		
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y - 1, z)); 
+        //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y - 1, z)); 
 		renderer.renderFaceYNeg(block, x, y, z, icon);
 		
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y + 1, z));
+        //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y + 1, z));
         renderer.renderFaceYPos(block, x, y, z, icon);
         
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z - 1));
+        //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z - 1));
 		renderer.renderFaceZNeg(block, x, y, z, icon);
 
-        tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
+        //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
 		renderer.renderFaceZPos(block, x, y, z, icon);
-
+		
 		return false;
+	
 	}
 
 	@Override
@@ -96,5 +102,10 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 	{
 		return world.getBlockId(x, y, z) != block.blockID && !world.isAirBlock(x, y, z);
 	}
-
+	
+	@Override
+	public Icon getBlockIcon(Block block, IBlockAccess world, int x, int y, int z, int par6)
+	{
+		return BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z));
+	}
 }

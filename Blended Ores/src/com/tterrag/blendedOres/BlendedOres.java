@@ -1,8 +1,8 @@
 package com.tterrag.blendedOres;
 
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
+import com.tterrag.blendedOres.block.DummyBlock;
 import com.tterrag.blendedOres.config.ConfigHandler;
 import com.tterrag.blendedOres.event.TextureEvents;
 import com.tterrag.blendedOres.lib.Reference;
@@ -29,6 +29,8 @@ public class BlendedOres {
 	
 	public static int renderID;
 	
+	public static DummyBlock block;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new TextureEvents());
@@ -37,6 +39,8 @@ public class BlendedOres {
 		RenderingRegistry.registerBlockHandler(new OreRenderer());
 		System.out.println("RenderID: " + renderID);
 		proxy.initSounds();
+		
+		block = new DummyBlock(3324);
 	}
 
 	@EventHandler
