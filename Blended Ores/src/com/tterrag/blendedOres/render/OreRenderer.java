@@ -21,6 +21,9 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 		Block renderBlock = findNearestDiffBlock(world, x, y, z, block);
 		renderer.renderStandardBlock(renderBlock == null || !renderBlock.isOpaqueCube() ? Block.stone : renderBlock, x, y, z);
 		renderer.renderFaceXNeg(block, x, y, z, BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
+		renderer.renderFaceXPos(block, x, y, z, BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
+
+	//	System.out.println(BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z)));
 		return false;
 	}
 
@@ -41,17 +44,17 @@ public class OreRenderer implements ISimpleBlockRenderingHandler{
 		int[] dirs = new int[6];
 		if (anyDiffBlocksTouching(world, x, y, z, block))
 		{
-			 if (world.getBlockId(x + 1, y, z) != block.blockID && !world.isAirBlock(x + 1, y, z))
+			 if (world.getBlockId(x + 1, y, z) != block.blockID && !world.isAirBlock(x + 1, y, z) && world.getBlockId(x + 1, y, z) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x + 1, y, z)];
-			 if (world.getBlockId(x - 1, y, z) != block.blockID && !world.isAirBlock(x - 1, y, z))
+			 if (world.getBlockId(x - 1, y, z) != block.blockID && !world.isAirBlock(x - 1, y, z) && world.getBlockId(x - 1, y, z) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x - 1, y, z)];
-			 if (world.getBlockId(x, y + 1, z) != block.blockID && !world.isAirBlock(x, y + 1, z))
+			 if (world.getBlockId(x, y + 1, z) != block.blockID && !world.isAirBlock(x, y + 1, z) && world.getBlockId(x, y + 1, z) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x, y + 1, z)];
-			 if (world.getBlockId(x, y - 1, z) != block.blockID && !world.isAirBlock(x, y - 1, z))
+			 if (world.getBlockId(x, y - 1, z) != block.blockID && !world.isAirBlock(x, y - 1, z) && world.getBlockId(x, y - 1, z) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x, y - 1, z)];
-			 if (world.getBlockId(x, y, z + 1) != block.blockID && !world.isAirBlock(x, y, z + 1))
+			 if (world.getBlockId(x, y, z + 1) != block.blockID && !world.isAirBlock(x, y, z + 1) && world.getBlockId(x, y, z + 1) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x, y, z + 1)];
-			 if (world.getBlockId(x, y, z - 1) != block.blockID && !world.isAirBlock(x, y, z - 1))
+			 if (world.getBlockId(x, y, z - 1) != block.blockID && !world.isAirBlock(x, y, z - 1) && world.getBlockId(x, y, z - 1) != block.blockID)
 				 return Block.blocksList[world.getBlockId(x, y, z - 1)];
 		}
 		else return findNearestDiffBlock(world, x, y - 1, z, block);

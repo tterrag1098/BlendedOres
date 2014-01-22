@@ -2,7 +2,7 @@ package com.tterrag.blendedOres.lib;
 
 public class Reference {
 
-	public static final String MOD_ID = "blended_ores";
+	public static final String MOD_ID = "blendedores";
 	public static final String MOD_NAME = "Blended Ores";
 	public static final String VERSION = "0.0.1";
 	

@@ -1,6 +1,10 @@
 package com.tterrag.blendedOres;
 
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
+
 import com.tterrag.blendedOres.config.ConfigHandler;
+import com.tterrag.blendedOres.event.TextureEvents;
 import com.tterrag.blendedOres.lib.Reference;
 import com.tterrag.blendedOres.proxy.CommonProxy;
 import com.tterrag.blendedOres.render.OreRenderer;
@@ -27,13 +31,12 @@ public class BlendedOres {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		
+		MinecraftForge.EVENT_BUS.register(new TextureEvents());
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 		renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new OreRenderer());
 		System.out.println("RenderID: " + renderID);
 		proxy.initSounds();
-		proxy.initRenderers();
 	}
 
 	@EventHandler
