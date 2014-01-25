@@ -40,7 +40,7 @@ public class CommonProxy {
 		
 		int idx = 0;
 		for (int[] i : idsAndMetasToRender)
-		{
+		{	
 			
 			ArrayList<Integer> toAdd = new ArrayList<Integer>();
 			for (Integer integer : i)

@@ -1,6 +1,7 @@
 package com.tterrag.blendedOres.render;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
@@ -22,8 +23,14 @@ public class OreRenderer extends RenderBlocks implements ISimpleBlockRenderingHa
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
 		Block renderBlock = findNearestDiffBlock(world, x, y, z, block);
-		renderer.renderStandardBlock(renderBlock == null || !renderBlock.isOpaqueCube() ? Block.stone : renderBlock, x, y, z);
-		Icon icon = BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z));
+		Icon icon1 = renderBlock.getBlockTexture(world, x, y, z, 0);
+		renderer.setOverrideBlockTexture(icon1);
+		renderer.renderStandardBlock(Block.stone, x, y, z);
+		Icon icon2 = BlendedOres.proxy.getBlockTexture(world, x, y, z, world.getBlockMetadata(x, y, z));
+		renderer.setOverrideBlockTexture(icon2);
+		renderer.renderStandardBlock(Block.stone, x, y, z);
+		renderer.clearOverrideBlockTexture();
+		/*
 
 		///System.out.println(block.blockID);
 		//this.renderStandardBlock(Block.stone, x, y, z);
@@ -49,9 +56,8 @@ public class OreRenderer extends RenderBlocks implements ISimpleBlockRenderingHa
 
         //tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
 		renderer.renderFaceZPos(block, x, y, z, icon);
-		
+		*/
 		return false;
-	
 	}
 
 	@Override
