@@ -3,7 +3,6 @@ package com.tterrag.blendedOres.render;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 
@@ -40,7 +39,7 @@ public class OreRenderer extends RenderBlocks implements ISimpleBlockRenderingHa
 		renderer.setOverrideBlockTexture(icon2);
 		renderer.renderStandardBlock(Block.stone, x, y, z);
 		renderer.clearOverrideBlockTexture();
-		return false;
+		return true;
 	}
 
 	@Override
@@ -59,7 +58,6 @@ public class OreRenderer extends RenderBlocks implements ISimpleBlockRenderingHa
 	{
 		if (world.isAirBlock(xOrig, yOrig, zOrig))
 			return Block.stone;
-		int[] dirs = new int[6];
 		int x = xOrig, y = yOrig, z = zOrig;
 		if (anyDiffBlocksTouching(world, xOrig, yOrig, zOrig, block))
 		{

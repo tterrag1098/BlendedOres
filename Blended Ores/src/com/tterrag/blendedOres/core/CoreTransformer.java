@@ -39,7 +39,7 @@ public class CoreTransformer implements IClassTransformer
 
 	private byte[] patchClassOre(String name, byte[] bytes, boolean isObfuscated)
 	{
-		System.out.println("BEGINNING ORE TRANSFORMATION");
+		System.out.println("BEGINNING ORE TRANSFORMATION: " + name + " : " + isObfuscated);
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept(classNode, 0);

@@ -3,13 +3,15 @@ package com.tterrag.blendedOres.proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.tterrag.blendedOres.lib.Reference;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.event.TextureStitchEvent;
+
+import com.tterrag.blendedOres.lib.Reference;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
 
@@ -33,7 +35,15 @@ public class CommonProxy {
 		idsAndMetasToRender.add(new int[]{74, 0});
 		idsAndMetasToRender.add(new int[]{129, 0});
 		idsAndMetasToRender.add(new int[]{153, 0});
-
+		
+		/*
+		if (Loader.isModLoaded("arsmagica2"))
+		{
+			//idsAndMetasToRender.add(new int[]{am2.blocks.BlocksCommonProxy.AMOres.blockID, 0});
+			System.out.println(am2.blocks.BlocksCommonProxy.AMOres.getLocalizedName());
+			System.exit(0);
+		}
+		 */
 		
 		idAndMetaToRenderID = new HashMap<ArrayList<Integer>, Integer>();
 		icons = new ArrayList<Icon>();
@@ -50,16 +60,6 @@ public class CommonProxy {
 			idAndMetaToRenderID.put(toAdd, idx);
 			idx++;
 		}
-		
-		IconRegister register = new IconRegister()
-		{
-			@Override
-			public Icon registerIcon(String s)
-			{
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
 		
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":gold"));
 		icons.add(event.map.registerIcon(Reference.MOD_ID + ":iron"));

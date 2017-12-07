@@ -2,7 +2,6 @@ package com.tterrag.blendedOres;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import com.tterrag.blendedOres.block.DummyBlock;
 import com.tterrag.blendedOres.config.ConfigHandler;
 import com.tterrag.blendedOres.event.TextureEvents;
 import com.tterrag.blendedOres.lib.Reference;
@@ -18,7 +17,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies = "after:arsmagica2")
 public class BlendedOres {
 
 	@Instance(Reference.MOD_ID)
@@ -28,9 +27,7 @@ public class BlendedOres {
     public static CommonProxy proxy;
 	
 	public static int renderID;
-	
-	public static DummyBlock block;
-	
+		
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(new TextureEvents());
@@ -39,8 +36,6 @@ public class BlendedOres {
 		RenderingRegistry.registerBlockHandler(new OreRenderer());
 		System.out.println("RenderID: " + renderID);
 		proxy.initSounds();
-		
-		block = new DummyBlock(3324);
 	}
 
 	@EventHandler

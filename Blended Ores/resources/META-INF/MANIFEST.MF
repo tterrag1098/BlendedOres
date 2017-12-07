@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+FMLCorePlugin: com.tterrag.blendedOres.core.CoreBlendedOres
+FMLCorePluginContainsFMLMod: true
+
